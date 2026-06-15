@@ -247,10 +247,27 @@ async function registrar() {
 }
 
 function abrirWhatsapp() {
-  const tel = document.getElementById('telefone').value.replace(/\D/g, '');
+  const nome  = document.getElementById('nome').value.trim();
+  const tel   = document.getElementById('telefone').value.replace(/\D/g, '');
+  const total = (PRECOS[tipoSelecionado] * quantidade).toFixed(2).replace('.', ',');
+
+  // 1) Abre WhatsApp do CLIENTE
   const telFormatado = tel.startsWith('55') ? tel : '55' + tel;
-  const url = 'https://wa.me/' + telFormatado + '?text=' + encodeURIComponent(msgWhatsapp);
-  window.open(url, '_blank');
+  const urlCliente = 'https://wa.me/' + telFormatado + '?text=' + encodeURIComponent(msgWhatsapp);
+  window.open(urlCliente, '_blank');
+
+  // 2) Abre WhatsApp do DONO após 2 segundos
+  const msgDono =
+    '🥚 *RAPIDEGG — Nova venda!*\n\n' +
+    '👤 Cliente: *' + nome + '*\n' +
+    '📦 Pedido: *' + quantidade + 'x ' + tipoSelecionado + '*\n' +
+    '💰 Total: *R$ ' + total + '*\n' +
+    '📱 WhatsApp: ' + (document.getElementById('telefone').value.trim() || 'Não informado');
+
+  setTimeout(() => {
+    window.open('https://wa.me/5512981721636?text=' + encodeURIComponent(msgDono), '_blank');
+  }, 2000);
+
   fecharModal();
 }
 
