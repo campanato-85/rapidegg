@@ -4,81 +4,248 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>RAPIDEGG - Retirada de Ovos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; min-height: 100vh; }
 
-  .header { background: #1a1a1a; color: white; padding: 20px 16px 16px; text-align: center; }
-  .header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
-  .header p { font-size: 13px; color: #aaa; margin-top: 4px; }
+  body {
+    font-family: 'Lato', sans-serif;
+    background: #2c1a0e;
+    min-height: 100vh;
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 40px),
+      repeating-linear-gradient(180deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 60px);
+  }
 
-  .precos { display: flex; gap: 10px; padding: 14px 16px; }
-  .preco-card { flex: 1; border-radius: 12px; padding: 12px; text-align: center; border: 1.5px solid; }
-  .preco-branco { background: #f8f8f8; border-color: #ddd; }
-  .preco-caipira { background: #fff8e1; border-color: #f0c040; }
-  .preco-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
-  .preco-valor { font-size: 22px; font-weight: 700; margin-top: 2px; }
-  .preco-branco .preco-valor { color: #2e7d32; }
-  .preco-caipira .preco-valor { color: #e65100; }
+  .header {
+    background: linear-gradient(180deg, #1a0e06 0%, #2c1a0e 100%);
+    padding: 24px 16px 20px;
+    text-align: center;
+    border-bottom: 3px solid #8B6914;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0; right: 0;
+    height: 3px;
+    background: #c9a52a;
+  }
 
-  .form-card { background: white; margin: 0 16px 16px; border-radius: 16px; padding: 20px; border: 0.5px solid #e0e0e0; }
+  .logo-wrap {
+    display: inline-block;
+    border: 2.5px solid #8B6914;
+    border-radius: 12px;
+    padding: 10px 28px 8px;
+    position: relative;
+    background: rgba(0,0,0,0.3);
+  }
+  .logo-wrap::before {
+    content: '🐔';
+    position: absolute;
+    top: -18px; left: 50%; transform: translateX(-50%);
+    font-size: 22px;
+  }
 
-  .field { margin-bottom: 18px; }
-  .field label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
-  .field input { width: 100%; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; padding: 0 16px; font-size: 18px; color: #1a1a1a; background: #fafafa; -webkit-appearance: none; }
-  .field input:focus { outline: none; border-color: #1a1a1a; background: white; }
+  .logo-rapid { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #f5f0e8; letter-spacing: 1px; line-height: 1; }
+  .logo-egg   { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #c9a52a; letter-spacing: 1px; }
+  .logo-ovos  { font-size: 12px; letter-spacing: 6px; color: #a08040; text-transform: uppercase; margin-top: 2px; }
+
+  .header-sub {
+    margin-top: 12px;
+    font-size: 12px;
+    color: #8B6914;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .header-sub::before, .header-sub::after { content: '❧'; color: #6b4f1a; }
+
+  .precos {
+    display: flex; gap: 10px;
+    padding: 16px 14px 12px;
+  }
+  .preco-card {
+    flex: 1;
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    border: 1.5px solid;
+    background: rgba(255,255,255,0.06);
+  }
+  .preco-branco  { border-color: #7a9e6e; }
+  .preco-caipira { border-color: #c9a52a; }
+  .preco-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c9b07a; }
+  .preco-valor { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-top: 3px; }
+  .preco-branco  .preco-valor { color: #9ecf88; }
+  .preco-caipira .preco-valor { color: #e8c350; }
+
+  .steps {
+    display: flex; gap: 8px;
+    padding: 0 14px 14px;
+  }
+  .step {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #5a3e1b;
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    background: #8B6914;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px; font-weight: 700; color: #f5f0e8;
+    margin: 0 auto 6px;
+  }
+  .step-txt { font-size: 10px; color: #c9b07a; line-height: 1.3; }
+
+  .form-card {
+    background: #f5f0e0;
+    margin: 0 14px 16px;
+    border-radius: 14px;
+    padding: 20px 16px;
+    border: 2px solid #c9a52a;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .form-card::before {
+    content: '· · ·';
+    position: absolute;
+    top: -12px; left: 50%; transform: translateX(-50%);
+    background: #c9a52a;
+    color: #2c1a0e;
+    font-size: 10px;
+    padding: 2px 12px;
+    border-radius: 20px;
+    letter-spacing: 3px;
+  }
+
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 11px; font-weight: 700; color: #5a3a10; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 1px; }
+  .field input {
+    width: 100%; height: 50px;
+    border: 1.5px solid #c9a87a;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 17px; font-family: 'Lato', sans-serif;
+    color: #2c1a0e; background: #fffdf5;
+    -webkit-appearance: none;
+  }
+  .field input:focus { outline: none; border-color: #8B6914; background: white; }
+  .field input::placeholder { color: #b0956a; font-size: 15px; }
 
   .tipo-grid { display: flex; gap: 10px; }
-  .tipo-btn { flex: 1; height: 64px; border: 2px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 15px; font-weight: 600; color: #555; cursor: pointer; -webkit-appearance: none; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
-  .tipo-btn span.sub { font-size: 11px; font-weight: 400; color: #999; }
-  .tipo-btn.selected-branco { border-color: #2e7d32; background: #f1f8f1; color: #2e7d32; }
-  .tipo-btn.selected-branco span.sub { color: #4caf50; }
-  .tipo-btn.selected-caipira { border-color: #e65100; background: #fff8f0; color: #e65100; }
-  .tipo-btn.selected-caipira span.sub { color: #ff8a65; }
+  .tipo-btn {
+    flex: 1; height: 62px;
+    border: 2px solid #c9a87a;
+    border-radius: 10px;
+    background: #fffdf5;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px; font-weight: 700; color: #5a3a10;
+    cursor: pointer; -webkit-appearance: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  }
+  .tipo-btn span.sub { font-size: 10px; font-weight: 400; color: #a08050; }
+  .tipo-btn.selected-branco  { border-color: #4a8a3a; background: #f0f8ec; color: #2d6020; }
+  .tipo-btn.selected-branco span.sub  { color: #5a9a48; }
+  .tipo-btn.selected-caipira { border-color: #b8860b; background: #fdf8e8; color: #7a5500; }
+  .tipo-btn.selected-caipira span.sub { color: #c9a52a; }
 
-  .qtd-row { display: flex; align-items: center; gap: 12px; }
-  .qtd-btn { width: 52px; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 26px; font-weight: 300; color: #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; flex-shrink: 0; }
-  .qtd-btn:active { background: #eee; }
-  .qtd-display { flex: 1; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 26px; font-weight: 600; color: #1a1a1a; text-align: center; display: flex; align-items: center; justify-content: center; }
+  .qtd-row { display: flex; align-items: center; gap: 10px; }
+  .qtd-btn {
+    width: 50px; height: 50px;
+    border: 1.5px solid #c9a87a; border-radius: 10px;
+    background: #fffdf5; font-size: 28px; font-weight: 300;
+    color: #5a3a10; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    -webkit-appearance: none; flex-shrink: 0;
+  }
+  .qtd-btn:active { background: #f0e8d0; }
+  .qtd-display {
+    flex: 1; height: 50px;
+    border: 1.5px solid #c9a87a; border-radius: 10px;
+    background: #fffdf5;
+    font-family: 'Playfair Display', serif;
+    font-size: 26px; font-weight: 700; color: #2c1a0e;
+    display: flex; align-items: center; justify-content: center;
+  }
 
-  .resumo { background: #f5f5f0; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: none; }
+  .resumo {
+    background: #f0e8cc;
+    border: 1.5px solid #c9a52a;
+    border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 16px;
+    display: none; text-align: center;
+  }
   .resumo.visible { display: block; }
-  .resumo-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; }
-  .resumo-valor { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-top: 2px; }
+  .resumo-label { font-size: 11px; color: #8B6914; text-transform: uppercase; letter-spacing: 1px; }
+  .resumo-valor { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #2c6020; margin-top: 2px; }
 
-  .btn-registrar { width: 100%; height: 60px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: 600; cursor: pointer; -webkit-appearance: none; letter-spacing: -0.3px; }
-  .btn-registrar:active { background: #333; transform: scale(0.99); }
-  .btn-registrar:disabled { background: #bbb; cursor: not-allowed; transform: none; }
+  .btn-registrar {
+    width: 100%; height: 58px;
+    background: linear-gradient(180deg, #5a8a3a 0%, #3d6328 100%);
+    color: #f5f0e8; border: none; border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    cursor: pointer; -webkit-appearance: none;
+    letter-spacing: 0.5px;
+    border-bottom: 3px solid #2a4a18;
+  }
+  .btn-registrar:active { transform: translateY(2px); border-bottom-width: 1px; }
+  .btn-registrar:disabled { background: #a0a090; border-bottom-color: #808070; cursor: not-allowed; transform: none; }
 
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .rodape {
+    text-align: center; padding: 8px 16px 24px;
+    font-size: 11px; color: #6b4f1a;
+    letter-spacing: 1px;
+  }
+
+  .overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75); z-index: 100;
+    align-items: center; justify-content: center; padding: 20px;
+  }
   .overlay.show { display: flex; }
-  .modal { background: white; border-radius: 20px; padding: 32px 24px; text-align: center; width: 100%; max-width: 320px; }
+  .modal {
+    background: #f5f0e0;
+    border-radius: 20px; padding: 32px 24px;
+    text-align: center; width: 100%; max-width: 320px;
+    border: 2px solid #c9a52a;
+  }
   .modal-icon { font-size: 52px; margin-bottom: 12px; }
-  .modal-title { font-size: 22px; font-weight: 700; color: #1a1a1a; }
-  .modal-sub { font-size: 15px; color: #666; margin-top: 8px; line-height: 1.5; }
-  .modal-btn { margin-top: 24px; width: 100%; height: 52px; background: #1a1a1a; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
-
-  .steps { display: flex; gap: 6px; padding: 0 16px 14px; }
-  .step { flex: 1; background: white; border-radius: 10px; padding: 10px 8px; text-align: center; border: 0.5px solid #e0e0e0; }
-  .step-num { font-size: 18px; font-weight: 700; color: #1a1a1a; }
-  .step-txt { font-size: 11px; color: #888; margin-top: 2px; line-height: 1.3; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #2c1a0e; }
+  .modal-sub { font-size: 14px; color: #5a3a10; margin-top: 10px; line-height: 1.6; }
+  .modal-btn {
+    margin-top: 24px; width: 100%; height: 50px;
+    background: linear-gradient(180deg, #5a8a3a 0%, #3d6328 100%);
+    color: #f5f0e8; border: none; border-radius: 12px;
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700; cursor: pointer;
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>🥚 RAPIDEGG</h1>
-  <p>Autoatendimento — Registre sua retirada</p>
+  <div class="logo-wrap">
+    <div><span class="logo-rapid">RAPID</span><span class="logo-egg">EGG</span></div>
+    <div class="logo-ovos">O V O S</div>
+  </div>
+  <div class="header-sub">Instruções de Retirada</div>
 </div>
 
 <div class="precos">
   <div class="preco-card preco-branco">
     <div class="preco-label">Branco</div>
-    <div class="preco-valor">R$ 3,30</div>
+    <div class="preco-valor">R$ 22,00</div>
   </div>
   <div class="preco-card preco-caipira">
     <div class="preco-label">Caipira / Vermelho</div>
-    <div class="preco-valor">R$ 4,95</div>
+    <div class="preco-valor">R$ 32,00</div>
   </div>
 </div>
 
@@ -98,10 +265,10 @@
     <label>Tipo de ovo</label>
     <div class="tipo-grid">
       <button class="tipo-btn" id="btn-branco" onclick="selectTipo('Branco')">
-        Branco <span class="sub">R$ 3,30/band.</span>
+        Branco <span class="sub">R$ 22,00 / bandeja</span>
       </button>
       <button class="tipo-btn" id="btn-caipira" onclick="selectTipo('Caipira')">
-        Caipira <span class="sub">R$ 4,95/band.</span>
+        Caipira <span class="sub">R$ 32,00 / bandeja</span>
       </button>
     </div>
   </div>
@@ -121,9 +288,11 @@
   </div>
 
   <button class="btn-registrar" id="btn-registrar" onclick="registrar()" disabled>
-    Registrar retirada
+    Registrar Retirada
   </button>
 </div>
+
+<div class="rodape">🥚 Ovos frescos e de qualidade — Obrigado! 🥚</div>
 
 <div class="overlay" id="overlay">
   <div class="modal">
@@ -136,14 +305,13 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbzUnbBjFK0eFVzZ9dEYtvZAfPqlkrhCZuTN-Cva1owIUMw7l_ISogx2PaxaZ6kEdPxk9Q/exec';
-const PRECOS = { 'Branco': 3.30, 'Caipira': 4.95 };
-
+const PRECOS = { 'Branco': 22.00, 'Caipira': 32.00 };
 let tipoSelecionado = null;
 let quantidade = 1;
 
 function selectTipo(tipo) {
   tipoSelecionado = tipo;
-  document.getElementById('btn-branco').className = 'tipo-btn' + (tipo === 'Branco' ? ' selected-branco' : '');
+  document.getElementById('btn-branco').className  = 'tipo-btn' + (tipo === 'Branco'  ? ' selected-branco'  : '');
   document.getElementById('btn-caipira').className = 'tipo-btn' + (tipo === 'Caipira' ? ' selected-caipira' : '');
   atualizarResumo();
 }
@@ -173,15 +341,12 @@ document.getElementById('nome').addEventListener('input', atualizarResumo);
 async function registrar() {
   const nome = document.getElementById('nome').value.trim();
   if (!nome || !tipoSelecionado) return;
-
   const btn = document.getElementById('btn-registrar');
   btn.disabled = true;
   btn.textContent = 'Enviando...';
-
   try {
     await fetch(API_URL, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome, quantidade, tipo: tipoSelecionado })
     });
@@ -192,9 +357,8 @@ async function registrar() {
   } catch(e) {
     alert('Erro ao registrar. Verifique a conexão Wi-Fi.');
   }
-
   btn.disabled = false;
-  btn.textContent = 'Registrar retirada';
+  btn.textContent = 'Registrar Retirada';
 }
 
 function fecharModal() {
@@ -203,11 +367,11 @@ function fecharModal() {
   tipoSelecionado = null;
   quantidade = 1;
   document.getElementById('qtd-display').textContent = '1';
-  document.getElementById('btn-branco').className = 'tipo-btn';
+  document.getElementById('btn-branco').className  = 'tipo-btn';
   document.getElementById('btn-caipira').className = 'tipo-btn';
   document.getElementById('resumo').classList.remove('visible');
   document.getElementById('btn-registrar').disabled = true;
-  document.getElementById('btn-registrar').textContent = 'Registrar retirada';
+  document.getElementById('btn-registrar').textContent = 'Registrar Retirada';
 }
 </script>
 </body>
