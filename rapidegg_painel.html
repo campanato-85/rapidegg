@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAPIDEGG - Painel do Dono</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; min-height: 100vh; }
+
+  .header { background: #1a1a1a; color: white; padding: 20px 16px 16px; display: flex; align-items: center; justify-content: space-between; }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header p { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .btn-refresh { background: #333; border: none; color: white; border-radius: 10px; padding: 8px 14px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .btn-refresh:active { background: #555; }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px; }
+  .card { background: white; border-radius: 14px; padding: 14px; border: 0.5px solid #e0e0e0; }
+  .card-label { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; }
+  .card-val { font-size: 26px; font-weight: 700; color: #1a1a1a; margin-top: 4px; }
+  .card-sub { font-size: 12px; color: #aaa; margin-top: 2px; }
+  .card.verde .card-val { color: #2e7d32; }
+  .card.laranja .card-val { color: #e65100; }
+
+  .section-title { font-size: 13px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.4px; padding: 0 16px 8px; }
+
+  .lista { padding: 0 16px 80px; }
+  .item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; border: 0.5px solid #e0e0e0; display: flex; align-items: center; gap: 12px; }
+  .item-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+  .av-branco { background: #f1f8f1; color: #2e7d32; }
+  .av-caipira { background: #fff8f0; color: #e65100; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-nome { font-size: 15px; font-weight: 600; color: #1a1a1a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .item-det { font-size: 12px; color: #888; margin-top: 2px; }
+  .item-val { font-size: 16px; font-weight: 700; color: #1a1a1a; flex-shrink: 0; }
+
+  .empty { text-align: center; padding: 60px 20px; color: #bbb; }
+  .empty p { font-size: 16px; margin-top: 8px; }
+
+  .loading { text-align: center; padding: 40px; color: #888; font-size: 15px; }
+
+  .filtros { display: flex; gap: 8px; padding: 0 16px 12px; overflow-x: auto; }
+  .filtro { padding: 7px 16px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 13px; font-weight: 600; color: #555; cursor: pointer; white-space: nowrap; -webkit-appearance: none; }
+  .filtro.active { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🥚 RAPIDEGG</h1>
+    <p>Painel do responsável</p>
+  </div>
+  <button class="btn-refresh" onclick="carregar()">↻ Atualizar</button>
+</div>
+
+<div class="cards" id="cards">
+  <div class="card"><div class="card-label">Total vendido</div><div class="card-val" id="c-total">—</div></div>
+  <div class="card"><div class="card-label">Registros</div><div class="card-val" id="c-registros">—</div></div>
+  <div class="card verde"><div class="card-label">Brancos</div><div class="card-val" id="c-brancos">—</div><div class="card-sub">bandejas</div></div>
+  <div class="card laranja"><div class="card-label">Caipira</div><div class="card-val" id="c-caipira">—</div><div class="card-sub">bandejas</div></div>
+</div>
+
+<div class="filtros">
+  <button class="filtro active" onclick="filtrar('todos', this)">Todos</button>
+  <button class="filtro" onclick="filtrar('Branco', this)">Branco</button>
+  <button class="filtro" onclick="filtrar('Caipira', this)">Caipira</button>
+  <button class="filtro" onclick="filtrar('hoje', this)">Hoje</button>
+</div>
+
+<div class="section-title">Registros</div>
+<div class="lista" id="lista"><div class="loading">Carregando...</div></div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzUnbBjFK0eFVzZ9dEYtvZAfPqlkrhCZuTN-Cva1owIUMw7l_ISogx2PaxaZ6kEdPxk9Q/exec';
+
+let todosRegistros = [];
+let filtroAtivo = 'todos';
+
+function iniciais(nome) {
+  return nome.split(' ').slice(0, 2).map(p => p[0]).join('').toUpperCase();
+}
+
+function formatarData(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  if (isNaN(d)) return ts;
+  return d.toLocaleDateString('pt-BR') + ' ' + d.toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
+}
+
+function ehHoje(ts) {
+  const d = new Date(ts);
+  const hoje = new Date();
+  return d.getDate() === hoje.getDate() && d.getMonth() === hoje.getMonth() && d.getFullYear() === hoje.getFullYear();
+}
+
+function renderizar(registros) {
+  const lista = document.getElementById('lista');
+  if (!registros.length) {
+    lista.innerHTML = '<div class="empty"><p>Nenhum registro encontrado.</p></div>';
+    return;
+  }
+  lista.innerHTML = registros.slice().reverse().map(r => {
+    const tipo = (r['Tipo'] || '').trim();
+    const nome = r['Nome'] || '—';
+    const qtd = r['Quantidade'] || 1;
+    const ts = r['Timestamp'] || '';
+    const valor = parseFloat(r['Valor'] || 0).toFixed(2).replace('.', ',');
+    const av = tipo === 'Branco' ? 'av-branco' : 'av-caipira';
+    return `
+      <div class="item">
+        <div class="item-avatar ${av}">${iniciais(nome)}</div>
+        <div class="item-info">
+          <div class="item-nome">${nome}</div>
+          <div class="item-det">${qtd}x ${tipo} • ${formatarData(ts)}</div>
+        </div>
+        <div class="item-val">R$ ${valor}</div>
+      </div>`;
+  }).join('');
+}
+
+function atualizarCards(registros) {
+  const total = registros.reduce((s, r) => s + parseFloat(r['Valor'] || 0), 0);
+  const brancos = registros.filter(r => (r['Tipo']||'').trim() === 'Branco').reduce((s,r) => s + parseInt(r['Quantidade']||0), 0);
+  const caipira = registros.filter(r => (r['Tipo']||'').trim() === 'Caipira').reduce((s,r) => s + parseInt(r['Quantidade']||0), 0);
+  document.getElementById('c-total').textContent = 'R$ ' + total.toFixed(2).replace('.', ',');
+  document.getElementById('c-registros').textContent = registros.length;
+  document.getElementById('c-brancos').textContent = brancos;
+  document.getElementById('c-caipira').textContent = caipira;
+}
+
+function filtrar(tipo, btn) {
+  filtroAtivo = tipo;
+  document.querySelectorAll('.filtro').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  let filtrados = todosRegistros;
+  if (tipo === 'Branco') filtrados = todosRegistros.filter(r => (r['Tipo']||'').trim() === 'Branco');
+  else if (tipo === 'Caipira') filtrados = todosRegistros.filter(r => (r['Tipo']||'').trim() === 'Caipira');
+  else if (tipo === 'hoje') filtrados = todosRegistros.filter(r => ehHoje(r['Timestamp']));
+  renderizar(filtrados);
+  atualizarCards(filtrados);
+}
+
+async function carregar() {
+  document.getElementById('lista').innerHTML = '<div class="loading">Carregando...</div>';
+  try {
+    const res = await fetch(API_URL + '?t=' + Date.now());
+    const json = await res.json();
+    todosRegistros = (json.data || []).filter(r => r['Nome']);
+    atualizarCards(todosRegistros);
+    renderizar(todosRegistros);
+  } catch(e) {
+    document.getElementById('lista').innerHTML = '<div class="empty"><p>Erro ao carregar. Verifique a conexão.</p></div>';
+  }
+}
+
+carregar();
+setInterval(carregar, 60000);
+</script>
+</body>
+</html>

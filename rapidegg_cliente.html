@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RAPIDEGG - Retirada de Ovos</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f0; min-height: 100vh; }
+
+  .header { background: #1a1a1a; color: white; padding: 20px 16px 16px; text-align: center; }
+  .header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+  .header p { font-size: 13px; color: #aaa; margin-top: 4px; }
+
+  .precos { display: flex; gap: 10px; padding: 14px 16px; }
+  .preco-card { flex: 1; border-radius: 12px; padding: 12px; text-align: center; border: 1.5px solid; }
+  .preco-branco { background: #f8f8f8; border-color: #ddd; }
+  .preco-caipira { background: #fff8e1; border-color: #f0c040; }
+  .preco-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #666; }
+  .preco-valor { font-size: 22px; font-weight: 700; margin-top: 2px; }
+  .preco-branco .preco-valor { color: #2e7d32; }
+  .preco-caipira .preco-valor { color: #e65100; }
+
+  .form-card { background: white; margin: 0 16px 16px; border-radius: 16px; padding: 20px; border: 0.5px solid #e0e0e0; }
+
+  .field { margin-bottom: 18px; }
+  .field label { display: block; font-size: 13px; font-weight: 600; color: #444; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .field input { width: 100%; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; padding: 0 16px; font-size: 18px; color: #1a1a1a; background: #fafafa; -webkit-appearance: none; }
+  .field input:focus { outline: none; border-color: #1a1a1a; background: white; }
+
+  .tipo-grid { display: flex; gap: 10px; }
+  .tipo-btn { flex: 1; height: 64px; border: 2px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 15px; font-weight: 600; color: #555; cursor: pointer; -webkit-appearance: none; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+  .tipo-btn span.sub { font-size: 11px; font-weight: 400; color: #999; }
+  .tipo-btn.selected-branco { border-color: #2e7d32; background: #f1f8f1; color: #2e7d32; }
+  .tipo-btn.selected-branco span.sub { color: #4caf50; }
+  .tipo-btn.selected-caipira { border-color: #e65100; background: #fff8f0; color: #e65100; }
+  .tipo-btn.selected-caipira span.sub { color: #ff8a65; }
+
+  .qtd-row { display: flex; align-items: center; gap: 12px; }
+  .qtd-btn { width: 52px; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 26px; font-weight: 300; color: #1a1a1a; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; flex-shrink: 0; }
+  .qtd-btn:active { background: #eee; }
+  .qtd-display { flex: 1; height: 52px; border: 1.5px solid #ddd; border-radius: 12px; background: #fafafa; font-size: 26px; font-weight: 600; color: #1a1a1a; text-align: center; display: flex; align-items: center; justify-content: center; }
+
+  .resumo { background: #f5f5f0; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; display: none; }
+  .resumo.visible { display: block; }
+  .resumo-label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.4px; }
+  .resumo-valor { font-size: 28px; font-weight: 700; color: #1a1a1a; margin-top: 2px; }
+
+  .btn-registrar { width: 100%; height: 60px; background: #1a1a1a; color: white; border: none; border-radius: 14px; font-size: 18px; font-weight: 600; cursor: pointer; -webkit-appearance: none; letter-spacing: -0.3px; }
+  .btn-registrar:active { background: #333; transform: scale(0.99); }
+  .btn-registrar:disabled { background: #bbb; cursor: not-allowed; transform: none; }
+
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+  .overlay.show { display: flex; }
+  .modal { background: white; border-radius: 20px; padding: 32px 24px; text-align: center; width: 100%; max-width: 320px; }
+  .modal-icon { font-size: 52px; margin-bottom: 12px; }
+  .modal-title { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+  .modal-sub { font-size: 15px; color: #666; margin-top: 8px; line-height: 1.5; }
+  .modal-btn { margin-top: 24px; width: 100%; height: 52px; background: #1a1a1a; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; }
+
+  .steps { display: flex; gap: 6px; padding: 0 16px 14px; }
+  .step { flex: 1; background: white; border-radius: 10px; padding: 10px 8px; text-align: center; border: 0.5px solid #e0e0e0; }
+  .step-num { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+  .step-txt { font-size: 11px; color: #888; margin-top: 2px; line-height: 1.3; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🥚 RAPIDEGG</h1>
+  <p>Autoatendimento — Registre sua retirada</p>
+</div>
+
+<div class="precos">
+  <div class="preco-card preco-branco">
+    <div class="preco-label">Branco</div>
+    <div class="preco-valor">R$ 3,30</div>
+  </div>
+  <div class="preco-card preco-caipira">
+    <div class="preco-label">Caipira / Vermelho</div>
+    <div class="preco-valor">R$ 4,95</div>
+  </div>
+</div>
+
+<div class="steps">
+  <div class="step"><div class="step-num">1</div><div class="step-txt">Pegue os ovos</div></div>
+  <div class="step"><div class="step-num">2</div><div class="step-txt">Preencha abaixo</div></div>
+  <div class="step"><div class="step-num">3</div><div class="step-txt">Registre e pague</div></div>
+</div>
+
+<div class="form-card">
+  <div class="field">
+    <label>Seu nome</label>
+    <input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="off" autocorrect="off" autocapitalize="words">
+  </div>
+
+  <div class="field">
+    <label>Tipo de ovo</label>
+    <div class="tipo-grid">
+      <button class="tipo-btn" id="btn-branco" onclick="selectTipo('Branco')">
+        Branco <span class="sub">R$ 3,30/band.</span>
+      </button>
+      <button class="tipo-btn" id="btn-caipira" onclick="selectTipo('Caipira')">
+        Caipira <span class="sub">R$ 4,95/band.</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Quantidade (bandejas)</label>
+    <div class="qtd-row">
+      <button class="qtd-btn" onclick="changeQtd(-1)">−</button>
+      <div class="qtd-display" id="qtd-display">1</div>
+      <button class="qtd-btn" onclick="changeQtd(1)">+</button>
+    </div>
+  </div>
+
+  <div class="resumo" id="resumo">
+    <div class="resumo-label">Total a pagar</div>
+    <div class="resumo-valor" id="resumo-valor">R$ 0,00</div>
+  </div>
+
+  <button class="btn-registrar" id="btn-registrar" onclick="registrar()" disabled>
+    Registrar retirada
+  </button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-icon">✅</div>
+    <div class="modal-title">Registrado!</div>
+    <div class="modal-sub" id="modal-sub">Obrigado! Não esqueça de efetuar o pagamento.</div>
+    <button class="modal-btn" onclick="fecharModal()">Fechar</button>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzUnbBjFK0eFVzZ9dEYtvZAfPqlkrhCZuTN-Cva1owIUMw7l_ISogx2PaxaZ6kEdPxk9Q/exec';
+const PRECOS = { 'Branco': 3.30, 'Caipira': 4.95 };
+
+let tipoSelecionado = null;
+let quantidade = 1;
+
+function selectTipo(tipo) {
+  tipoSelecionado = tipo;
+  document.getElementById('btn-branco').className = 'tipo-btn' + (tipo === 'Branco' ? ' selected-branco' : '');
+  document.getElementById('btn-caipira').className = 'tipo-btn' + (tipo === 'Caipira' ? ' selected-caipira' : '');
+  atualizarResumo();
+}
+
+function changeQtd(delta) {
+  quantidade = Math.max(1, Math.min(10, quantidade + delta));
+  document.getElementById('qtd-display').textContent = quantidade;
+  atualizarResumo();
+}
+
+function atualizarResumo() {
+  const nome = document.getElementById('nome').value.trim();
+  const ok = nome && tipoSelecionado;
+  document.getElementById('btn-registrar').disabled = !ok;
+  const resumo = document.getElementById('resumo');
+  if (ok) {
+    const total = (PRECOS[tipoSelecionado] * quantidade).toFixed(2).replace('.', ',');
+    document.getElementById('resumo-valor').textContent = 'R$ ' + total;
+    resumo.classList.add('visible');
+  } else {
+    resumo.classList.remove('visible');
+  }
+}
+
+document.getElementById('nome').addEventListener('input', atualizarResumo);
+
+async function registrar() {
+  const nome = document.getElementById('nome').value.trim();
+  if (!nome || !tipoSelecionado) return;
+
+  const btn = document.getElementById('btn-registrar');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, quantidade, tipo: tipoSelecionado })
+    });
+    const total = (PRECOS[tipoSelecionado] * quantidade).toFixed(2).replace('.', ',');
+    document.getElementById('modal-sub').textContent =
+      nome + ', você retirou ' + quantidade + ' bandeja(s) de ovo ' + tipoSelecionado + '. Total: R$ ' + total + '. Obrigado e efetue o pagamento!';
+    document.getElementById('overlay').classList.add('show');
+  } catch(e) {
+    alert('Erro ao registrar. Verifique a conexão Wi-Fi.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Registrar retirada';
+}
+
+function fecharModal() {
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('nome').value = '';
+  tipoSelecionado = null;
+  quantidade = 1;
+  document.getElementById('qtd-display').textContent = '1';
+  document.getElementById('btn-branco').className = 'tipo-btn';
+  document.getElementById('btn-caipira').className = 'tipo-btn';
+  document.getElementById('resumo').classList.remove('visible');
+  document.getElementById('btn-registrar').disabled = true;
+  document.getElementById('btn-registrar').textContent = 'Registrar retirada';
+}
+</script>
+</body>
+</html>
