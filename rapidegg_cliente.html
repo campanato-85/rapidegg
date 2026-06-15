@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     font-family: 'Lato', sans-serif;
     background: #2c1a0e;
@@ -16,216 +15,71 @@
       repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 2px, transparent 2px, transparent 40px),
       repeating-linear-gradient(180deg, rgba(0,0,0,0.04) 0px, rgba(0,0,0,0.04) 1px, transparent 1px, transparent 60px);
   }
-
   .header {
     background: linear-gradient(180deg, #1a0e06 0%, #2c1a0e 100%);
-    padding: 24px 16px 20px;
-    text-align: center;
-    border-bottom: 3px solid #8B6914;
-    position: relative;
+    padding: 24px 16px 20px; text-align: center;
+    border-bottom: 3px solid #8B6914; position: relative;
   }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: -6px; left: 0; right: 0;
-    height: 3px;
-    background: #c9a52a;
-  }
-
+  .header::after { content: ''; position: absolute; bottom: -6px; left: 0; right: 0; height: 3px; background: #c9a52a; }
   .logo-wrap {
-    display: inline-block;
-    border: 2.5px solid #8B6914;
-    border-radius: 12px;
-    padding: 10px 28px 8px;
-    position: relative;
-    background: rgba(0,0,0,0.3);
+    display: inline-block; border: 2.5px solid #8B6914;
+    border-radius: 12px; padding: 10px 28px 8px;
+    position: relative; background: rgba(0,0,0,0.3);
   }
-  .logo-wrap::before {
-    content: '🐔';
-    position: absolute;
-    top: -18px; left: 50%; transform: translateX(-50%);
-    font-size: 22px;
-  }
-
+  .logo-wrap::before { content: '🐔'; position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 22px; }
   .logo-rapid { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #f5f0e8; letter-spacing: 1px; line-height: 1; }
   .logo-egg   { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 900; color: #c9a52a; letter-spacing: 1px; }
   .logo-ovos  { font-size: 12px; letter-spacing: 6px; color: #a08040; text-transform: uppercase; margin-top: 2px; }
-
-  .header-sub {
-    margin-top: 12px;
-    font-size: 12px;
-    color: #8B6914;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
+  .header-sub { margin-top: 12px; font-size: 12px; color: #8B6914; letter-spacing: 3px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; }
   .header-sub::before, .header-sub::after { content: '❧'; color: #6b4f1a; }
-
-  .precos {
-    display: flex; gap: 10px;
-    padding: 16px 14px 12px;
-  }
-  .preco-card {
-    flex: 1;
-    border-radius: 10px;
-    padding: 12px 8px;
-    text-align: center;
-    border: 1.5px solid;
-    background: rgba(255,255,255,0.06);
-  }
+  .precos { display: flex; gap: 10px; padding: 16px 14px 12px; }
+  .preco-card { flex: 1; border-radius: 10px; padding: 12px 8px; text-align: center; border: 1.5px solid; background: rgba(255,255,255,0.06); }
   .preco-branco  { border-color: #7a9e6e; }
   .preco-caipira { border-color: #c9a52a; }
   .preco-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #c9b07a; }
   .preco-valor { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-top: 3px; }
   .preco-branco  .preco-valor { color: #9ecf88; }
   .preco-caipira .preco-valor { color: #e8c350; }
-
-  .steps {
-    display: flex; gap: 8px;
-    padding: 0 14px 14px;
-  }
-  .step {
-    flex: 1;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #5a3e1b;
-    border-radius: 10px;
-    padding: 10px 6px;
-    text-align: center;
-  }
-  .step-num {
-    width: 26px; height: 26px;
-    background: #8B6914;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 14px; font-weight: 700; color: #f5f0e8;
-    margin: 0 auto 6px;
-  }
+  .steps { display: flex; gap: 8px; padding: 0 14px 14px; }
+  .step { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid #5a3e1b; border-radius: 10px; padding: 10px 6px; text-align: center; }
+  .step-num { width: 26px; height: 26px; background: #8B6914; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: #f5f0e8; margin: 0 auto 6px; }
   .step-txt { font-size: 10px; color: #c9b07a; line-height: 1.3; }
-
-  .form-card {
-    background: #f5f0e0;
-    margin: 0 14px 16px;
-    border-radius: 14px;
-    padding: 20px 16px;
-    border: 2px solid #c9a52a;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    position: relative;
-  }
-  .form-card::before {
-    content: '· · ·';
-    position: absolute;
-    top: -12px; left: 50%; transform: translateX(-50%);
-    background: #c9a52a;
-    color: #2c1a0e;
-    font-size: 10px;
-    padding: 2px 12px;
-    border-radius: 20px;
-    letter-spacing: 3px;
-  }
-
+  .form-card { background: #f5f0e0; margin: 0 14px 16px; border-radius: 14px; padding: 20px 16px; border: 2px solid #c9a52a; box-shadow: 0 4px 20px rgba(0,0,0,0.4); position: relative; }
+  .form-card::before { content: '· · ·'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #c9a52a; color: #2c1a0e; font-size: 10px; padding: 2px 12px; border-radius: 20px; letter-spacing: 3px; }
   .field { margin-bottom: 16px; }
   .field label { display: block; font-size: 11px; font-weight: 700; color: #5a3a10; margin-bottom: 7px; text-transform: uppercase; letter-spacing: 1px; }
-  .field input {
-    width: 100%; height: 50px;
-    border: 1.5px solid #c9a87a;
-    border-radius: 10px;
-    padding: 0 14px;
-    font-size: 17px; font-family: 'Lato', sans-serif;
-    color: #2c1a0e; background: #fffdf5;
-    -webkit-appearance: none;
-  }
+  .field input { width: 100%; height: 50px; border: 1.5px solid #c9a87a; border-radius: 10px; padding: 0 14px; font-size: 17px; font-family: 'Lato', sans-serif; color: #2c1a0e; background: #fffdf5; -webkit-appearance: none; }
   .field input:focus { outline: none; border-color: #8B6914; background: white; }
   .field input::placeholder { color: #b0956a; font-size: 15px; }
-
   .tipo-grid { display: flex; gap: 10px; }
-  .tipo-btn {
-    flex: 1; height: 62px;
-    border: 2px solid #c9a87a;
-    border-radius: 10px;
-    background: #fffdf5;
-    font-family: 'Lato', sans-serif;
-    font-size: 14px; font-weight: 700; color: #5a3a10;
-    cursor: pointer; -webkit-appearance: none;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  }
+  .tipo-btn { flex: 1; height: 62px; border: 2px solid #c9a87a; border-radius: 10px; background: #fffdf5; font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700; color: #5a3a10; cursor: pointer; -webkit-appearance: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
   .tipo-btn span.sub { font-size: 10px; font-weight: 400; color: #a08050; }
   .tipo-btn.selected-branco  { border-color: #4a8a3a; background: #f0f8ec; color: #2d6020; }
   .tipo-btn.selected-branco span.sub  { color: #5a9a48; }
   .tipo-btn.selected-caipira { border-color: #b8860b; background: #fdf8e8; color: #7a5500; }
   .tipo-btn.selected-caipira span.sub { color: #c9a52a; }
-
   .qtd-row { display: flex; align-items: center; gap: 10px; }
-  .qtd-btn {
-    width: 50px; height: 50px;
-    border: 1.5px solid #c9a87a; border-radius: 10px;
-    background: #fffdf5; font-size: 28px; font-weight: 300;
-    color: #5a3a10; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    -webkit-appearance: none; flex-shrink: 0;
-  }
+  .qtd-btn { width: 50px; height: 50px; border: 1.5px solid #c9a87a; border-radius: 10px; background: #fffdf5; font-size: 28px; font-weight: 300; color: #5a3a10; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; flex-shrink: 0; }
   .qtd-btn:active { background: #f0e8d0; }
-  .qtd-display {
-    flex: 1; height: 50px;
-    border: 1.5px solid #c9a87a; border-radius: 10px;
-    background: #fffdf5;
-    font-family: 'Playfair Display', serif;
-    font-size: 26px; font-weight: 700; color: #2c1a0e;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .resumo {
-    background: #f0e8cc;
-    border: 1.5px solid #c9a52a;
-    border-radius: 10px;
-    padding: 12px 16px; margin-bottom: 16px;
-    display: none; text-align: center;
-  }
+  .qtd-display { flex: 1; height: 50px; border: 1.5px solid #c9a87a; border-radius: 10px; background: #fffdf5; font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: #2c1a0e; display: flex; align-items: center; justify-content: center; }
+  .resumo { background: #f0e8cc; border: 1.5px solid #c9a52a; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; display: none; text-align: center; }
   .resumo.visible { display: block; }
   .resumo-label { font-size: 11px; color: #8B6914; text-transform: uppercase; letter-spacing: 1px; }
   .resumo-valor { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: #2c6020; margin-top: 2px; }
-
-  .btn-registrar {
-    width: 100%; height: 58px;
-    background: linear-gradient(180deg, #5a8a3a 0%, #3d6328 100%);
-    color: #f5f0e8; border: none; border-radius: 12px;
-    font-family: 'Playfair Display', serif;
-    font-size: 18px; font-weight: 700;
-    cursor: pointer; -webkit-appearance: none;
-    letter-spacing: 0.5px;
-    border-bottom: 3px solid #2a4a18;
-  }
+  .btn-registrar { width: 100%; height: 58px; background: linear-gradient(180deg, #5a8a3a 0%, #3d6328 100%); color: #f5f0e8; border: none; border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; cursor: pointer; -webkit-appearance: none; letter-spacing: 0.5px; border-bottom: 3px solid #2a4a18; }
   .btn-registrar:active { transform: translateY(2px); border-bottom-width: 1px; }
   .btn-registrar:disabled { background: #a0a090; border-bottom-color: #808070; cursor: not-allowed; transform: none; }
-
-  .rodape {
-    text-align: center; padding: 8px 16px 24px;
-    font-size: 11px; color: #6b4f1a;
-    letter-spacing: 1px;
-  }
-
-  .overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75); z-index: 100;
-    align-items: center; justify-content: center; padding: 20px;
-  }
+  .rodape { text-align: center; padding: 8px 16px 24px; font-size: 11px; color: #6b4f1a; letter-spacing: 1px; }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .overlay.show { display: flex; }
-  .modal {
-    background: #f5f0e0;
-    border-radius: 20px; padding: 32px 24px;
-    text-align: center; width: 100%; max-width: 320px;
-    border: 2px solid #c9a52a;
-  }
-  .modal-icon { font-size: 52px; margin-bottom: 12px; }
+  .modal { background: #f5f0e0; border-radius: 20px; padding: 28px 24px; text-align: center; width: 100%; max-width: 320px; border: 2px solid #c9a52a; }
+  .modal-icon { font-size: 48px; margin-bottom: 10px; }
   .modal-title { font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: #2c1a0e; }
-  .modal-sub { font-size: 14px; color: #5a3a10; margin-top: 10px; line-height: 1.6; }
-  .modal-btn {
-    margin-top: 24px; width: 100%; height: 50px;
-    background: linear-gradient(180deg, #5a8a3a 0%, #3d6328 100%);
-    color: #f5f0e8; border: none; border-radius: 12px;
-    font-family: 'Playfair Display', serif;
-    font-size: 16px; font-weight: 700; cursor: pointer;
-  }
+  .modal-sub { font-size: 13px; color: #5a3a10; margin-top: 8px; line-height: 1.6; }
+  .btn-whatsapp { margin-top: 18px; width: 100%; height: 54px; background: #25D366; color: white; border: none; border-radius: 12px; font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 3px solid #1aaa52; }
+  .btn-whatsapp:active { transform: translateY(2px); border-bottom-width: 1px; }
+  .btn-fechar { margin-top: 10px; width: 100%; height: 44px; background: transparent; color: #8B6914; border: 1.5px solid #c9a87a; border-radius: 12px; font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .tel-hint { font-size: 11px; color: #a08050; margin-top: 5px; }
 </style>
 </head>
 <body>
@@ -259,6 +113,12 @@
   <div class="field">
     <label>Seu nome</label>
     <input type="text" id="nome" placeholder="Digite seu nome completo" autocomplete="off" autocorrect="off" autocapitalize="words">
+  </div>
+
+  <div class="field">
+    <label>WhatsApp <span style="font-weight:400;color:#a08050;font-size:10px;">(para receber confirmação)</span></label>
+    <input type="tel" id="telefone" placeholder="(12) 99999-9999" maxlength="15">
+    <div class="tel-hint">Com DDD — apenas números</div>
   </div>
 
   <div class="field">
@@ -298,8 +158,11 @@
   <div class="modal">
     <div class="modal-icon">✅</div>
     <div class="modal-title">Registrado!</div>
-    <div class="modal-sub" id="modal-sub">Obrigado! Não esqueça de efetuar o pagamento.</div>
-    <button class="modal-btn" onclick="fecharModal()">Fechar</button>
+    <div class="modal-sub" id="modal-sub"></div>
+    <button class="btn-whatsapp" id="btn-whatsapp" onclick="abrirWhatsapp()">
+      <span style="font-size:20px;">📲</span> Confirmar pelo WhatsApp
+    </button>
+    <button class="btn-fechar" onclick="fecharModal()">Pular esta etapa</button>
   </div>
 </div>
 
@@ -308,6 +171,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzUnbBjFK0eFVzZ9dEYtvZA
 const PRECOS = { 'Branco': 22.00, 'Caipira': 32.00 };
 let tipoSelecionado = null;
 let quantidade = 1;
+let msgWhatsapp = '';
 
 function selectTipo(tipo) {
   tipoSelecionado = tipo;
@@ -338,32 +202,62 @@ function atualizarResumo() {
 
 document.getElementById('nome').addEventListener('input', atualizarResumo);
 
+// Formatar telefone automaticamente
+document.getElementById('telefone').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g, '');
+  if (v.length <= 11) {
+    v = v.replace(/^(\d{2})(\d)/,   '($1) $2');
+    v = v.replace(/(\d{5})(\d{4})$/, '$1-$2');
+  }
+  this.value = v;
+});
+
 async function registrar() {
   const nome = document.getElementById('nome').value.trim();
+  const tel  = document.getElementById('telefone').value.trim();
   if (!nome || !tipoSelecionado) return;
+
   const btn = document.getElementById('btn-registrar');
   btn.disabled = true;
   btn.textContent = 'Enviando...';
+
   try {
     await fetch(API_URL, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome, quantidade, tipo: tipoSelecionado })
+      body: JSON.stringify({ nome, quantidade, tipo: tipoSelecionado, telefone: tel })
     });
+
     const total = (PRECOS[tipoSelecionado] * quantidade).toFixed(2).replace('.', ',');
+    msgWhatsapp = `✅ *RAPIDEGG OVOS*\n\nOlá, *${nome}*!\n\nSua retirada foi registrada com sucesso:\n🥚 *${quantidade}x ${tipoSelecionado}*\n💰 *Total: R$ ${total}*\n\nObrigado pela preferência! 😊`;
+
     document.getElementById('modal-sub').textContent =
-      nome + ', você retirou ' + quantidade + ' bandeja(s) de ovo ' + tipoSelecionado + '. Total: R$ ' + total + '. Obrigado e efetue o pagamento!';
+      nome + ', você retirou ' + quantidade + ' bandeja(s) de ovo ' + tipoSelecionado + ' — R$ ' + total + '.';
+
+    // Mostrar botão WhatsApp só se tiver telefone
+    document.getElementById('btn-whatsapp').style.display = tel ? 'flex' : 'none';
+
     document.getElementById('overlay').classList.add('show');
   } catch(e) {
     alert('Erro ao registrar. Verifique a conexão Wi-Fi.');
   }
+
   btn.disabled = false;
   btn.textContent = 'Registrar Retirada';
+}
+
+function abrirWhatsapp() {
+  const tel = document.getElementById('telefone').value.replace(/\D/g, '');
+  const telFormatado = tel.startsWith('55') ? tel : '55' + tel;
+  const url = 'https://wa.me/' + telFormatado + '?text=' + encodeURIComponent(msgWhatsapp);
+  window.open(url, '_blank');
+  fecharModal();
 }
 
 function fecharModal() {
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('nome').value = '';
+  document.getElementById('telefone').value = '';
   tipoSelecionado = null;
   quantidade = 1;
   document.getElementById('qtd-display').textContent = '1';
@@ -372,6 +266,7 @@ function fecharModal() {
   document.getElementById('resumo').classList.remove('visible');
   document.getElementById('btn-registrar').disabled = true;
   document.getElementById('btn-registrar').textContent = 'Registrar Retirada';
+  msgWhatsapp = '';
 }
 </script>
 </body>
